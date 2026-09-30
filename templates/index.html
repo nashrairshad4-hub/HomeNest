@@ -1,0 +1,358 @@
+{% extends 'base.html' %}
+
+{% block title %}HomeNest — Find Your Dream Luxury Home in Pakistan{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section position-relative d-flex align-items-center">
+    <div class="hero-overlay"></div>
+    <div class="container position-relative z-2 py-5 text-center text-white">
+        <div class="badge-tag mb-3 animate-fade-in">
+            <i class="fa-solid fa-gem me-1 text-warning"></i> #1 Luxury Real Estate Marketplace
+        </div>
+        <h1 class="hero-title display-3 fw-bold mb-3 font-playfair animate-slide-up">
+            Find Your <span class="text-accent-gradient">Dream Home</span>
+        </h1>
+        <p class="hero-subtitle lead mb-5 mx-auto text-white-50 max-w-700 animate-slide-up">
+            Explore exclusive designer villas, luxury apartments, and private estates across Pakistan's most sought-after neighborhoods.
+        </p>
+
+        <!-- Advanced Search Box -->
+        <div class="search-card-wrapper mx-auto max-w-1000 shadow-lg rounded-4 p-3 p-md-4 animate-scale-up">
+            <form action="{{ url_for('properties.list_properties') }}" method="GET" class="search-form">
+                <div class="row g-2 g-md-3 text-start">
+                    <div class="col-lg-3 col-md-6">
+                        <label class="form-label small text-muted fw-semibold mb-1"><i class="fa-solid fa-location-dot text-primary me-1"></i> City / Location</label>
+                        <select name="location" class="form-select search-input">
+                            <option value="">All Locations</option>
+                            <option value="Faisalabad">Faisalabad</option>
+                            <option value="Lahore">Lahore</option>
+                            <option value="Islamabad">Islamabad</option>
+                            <option value="Karachi">Karachi</option>
+                            <option value="Rawalpindi">Rawalpindi</option>
+                            <option value="Multan">Multan</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <label class="form-label small text-muted fw-semibold mb-1"><i class="fa-solid fa-building text-primary me-1"></i> Property Type</label>
+                        <select name="type" class="form-select search-input">
+                            <option value="">All Types</option>
+                            <option value="House">House</option>
+                            <option value="Villa">Luxury Villa</option>
+                            <option value="Apartment">Apartment</option>
+                            <option value="Penthouse">Penthouse</option>
+                            <option value="Commercial">Commercial</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <label class="form-label small text-muted fw-semibold mb-1"><i class="fa-solid fa-bed text-primary me-1"></i> Min Beds</label>
+                        <select name="bedrooms" class="form-select search-input">
+                            <option value="">Any</option>
+                            <option value="2">2+ Beds</option>
+                            <option value="3">3+ Beds</option>
+                            <option value="4">4+ Beds</option>
+                            <option value="5">5+ Beds</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <label class="form-label small text-muted fw-semibold mb-1"><i class="fa-solid fa-tag text-primary me-1"></i> Max Price</label>
+                        <select name="max_price" class="form-select search-input">
+                            <option value="">Any Price</option>
+                            <option value="20000000">Up to 2 Crore</option>
+                            <option value="35000000">Up to 3.5 Crore</option>
+                            <option value="50000000">Up to 5 Crore</option>
+                            <option value="100000000">Up to 10 Crore</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-2 col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary-custom w-100 py-2 d-flex align-items-center justify-content-center gap-2">
+                            <i class="fa-solid fa-magnifying-glass"></i> Search
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Bar -->
+<section class="stats-section py-4 bg-white border-bottom shadow-xs">
+    <div class="container">
+        <div class="row text-center g-4">
+            <div class="col-6 col-md-3">
+                <div class="stat-number fw-bold text-primary display-6">{{ total_properties }}+</div>
+                <div class="stat-label text-muted small fw-medium">Active Luxury Properties</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-number fw-bold text-primary display-6">{{ sold_properties }}+</div>
+                <div class="stat-label text-muted small fw-medium">Homes Sold Successfully</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-number fw-bold text-primary display-6">{{ total_users * 150 + 850 }}+</div>
+                <div class="stat-label text-muted small fw-medium">Verified Buyers & Investors</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-number fw-bold text-primary display-6">99.8%</div>
+                <div class="stat-label text-muted small fw-medium">Customer Trust Rating</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Properties -->
+<section class="featured-section py-5 bg-light-soft">
+    <div class="container py-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+            <div>
+                <span class="section-badge text-primary fw-bold text-uppercase small">Handpicked Portfolio</span>
+                <h2 class="section-title font-playfair display-6 fw-bold mt-1">Featured Properties</h2>
+            </div>
+            <a href="{{ url_for('properties.list_properties') }}" class="btn btn-link text-primary text-decoration-none fw-semibold p-0 mt-2 mt-md-0">
+                View All Properties <i class="fa-solid fa-arrow-right-long ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row g-4">
+            {% for prop in featured_properties %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="property-card h-100 shadow-sm rounded-4 overflow-hidden bg-white border-0 transition-hover position-relative">
+                        <!-- Image Container -->
+                        <div class="property-img-box position-relative overflow-hidden">
+                            <img src="{{ prop.image }}" alt="{{ prop.title }}" class="property-thumbnail w-100 object-fit-cover">
+                            
+                            <div class="property-badges position-absolute top-0 start-0 m-3 d-flex gap-2">
+                                <span class="badge bg-primary text-white rounded-pill px-3 py-2 fw-medium shadow-xs">
+                                    {{ prop.property_type }}
+                                </span>
+                                {% if prop.status == 'Sold' %}
+                                    <span class="badge bg-danger text-white rounded-pill px-3 py-2 fw-medium shadow-xs">Sold</span>
+                                {% else %}
+                                    <span class="badge bg-success text-white rounded-pill px-3 py-2 fw-medium shadow-xs">For Sale</span>
+                                {% endif %}
+                            </div>
+
+                            <form action="{{ url_for('properties.toggle_favorite', property_id=prop.id) }}" method="POST" class="fav-form-inline position-absolute top-0 end-0 m-3">
+                                <button type="submit" class="btn btn-fav-round shadow-sm" title="Add to Favorites">
+                                    <i class="fa-regular fa-heart"></i>
+                                </button>
+                            </form>
+
+                            <div class="property-price-chip position-absolute bottom-0 start-0 m-3 bg-dark-glass text-white rounded-3 px-3 py-1 font-playfair fw-bold">
+                                {{ prop.formatted_price }}
+                            </div>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="card-body p-4 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="text-muted small mb-2 d-flex align-items-center gap-1">
+                                    <i class="fa-solid fa-location-dot text-danger"></i>
+                                    <span>{{ prop.location }} &bull; {{ prop.address }}</span>
+                                </div>
+                                <h5 class="card-title fw-bold text-dark mb-3 text-truncate-2">
+                                    <a href="{{ url_for('properties.details', property_id=prop.id) }}" class="text-decoration-none text-dark hover-primary">
+                                        {{ prop.title }}
+                                    </a>
+                                </h5>
+                            </div>
+
+                            <!-- Meta details -->
+                            <div class="property-meta d-flex justify-content-between py-3 border-top border-bottom text-muted small mb-3">
+                                <div><i class="fa-solid fa-bed text-primary me-1"></i> {{ prop.bedrooms }} Beds</div>
+                                <div><i class="fa-solid fa-bath text-primary me-1"></i> {{ prop.bathrooms }} Baths</div>
+                                <div><i class="fa-solid fa-vector-square text-primary me-1"></i> {{ prop.area }}</div>
+                            </div>
+
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="seller-brief d-flex align-items-center gap-2">
+                                    <div class="avatar-circle-sm bg-primary-subtle text-primary fw-bold">
+                                        {{ prop.seller.name[:1] if prop.seller else 'H' }}
+                                    </div>
+                                    <span class="small text-muted text-truncate" style="max-width: 110px;">{{ prop.seller.name if prop.seller else 'HomeNest Agent' }}</span>
+                                </div>
+                                <a href="{{ url_for('properties.details', property_id=prop.id) }}" class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold">
+                                    Details <i class="fa-solid fa-chevron-right ms-1 small"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12 text-center py-5 text-muted">
+                    <i class="fa-solid fa-house-chimney-crack display-4 mb-3 text-secondary"></i>
+                    <p>No featured properties available at this moment.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Popular Locations -->
+<section class="locations-section py-5 bg-white">
+    <div class="container py-4">
+        <div class="text-center max-w-700 mx-auto mb-5">
+            <span class="section-badge text-primary fw-bold text-uppercase small">Prime Hubs</span>
+            <h2 class="section-title font-playfair display-6 fw-bold mt-1">Explore Popular Locations</h2>
+            <p class="text-muted">Discover thriving metropolitan cities and prestigious gated neighborhoods.</p>
+        </div>
+
+        <div class="row g-4">
+            {% for city in popular_cities %}
+                <div class="col-lg-3 col-md-6">
+                    <a href="{{ url_for('properties.list_properties', location=city.name) }}" class="location-card d-block position-relative rounded-4 overflow-hidden text-decoration-none shadow-sm group">
+                        <img src="{{ city.image }}" alt="{{ city.name }}" class="location-img w-100 object-fit-cover transition-transform">
+                        <div class="location-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-4 text-white">
+                            <h4 class="location-title font-playfair fw-bold mb-0 text-white">{{ city.name }}</h4>
+                            <span class="location-count small text-white-50">{{ city.count }} Properties Available</span>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="why-choose-us py-5 bg-dark-slate text-white position-relative">
+    <div class="container py-4">
+        <div class="text-center max-w-700 mx-auto mb-5">
+            <span class="badge bg-accent-gold text-dark px-3 py-1 rounded-pill fw-semibold mb-2">Excellence In Service</span>
+            <h2 class="font-playfair display-6 fw-bold text-white">Why Choose HomeNest</h2>
+            <p class="text-white-50">We redefine real estate transactions with uncompromising transparency and concierge support.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box h-100 p-4 rounded-4 bg-glass border border-white-10 text-center transition-hover">
+                    <div class="feature-icon mb-3 bg-primary text-white rounded-circle mx-auto d-flex align-items-center justify-content-center shadow">
+                        <i class="fa-solid fa-shield-halved fs-4"></i>
+                    </div>
+                    <h5 class="fw-bold text-white mb-2 font-playfair">100% Verified Properties</h5>
+                    <p class="text-white-50 small mb-0">Every house listing undergoes on-site architectural verification and title document scrutiny.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box h-100 p-4 rounded-4 bg-glass border border-white-10 text-center transition-hover">
+                    <div class="feature-icon mb-3 bg-accent text-white rounded-circle mx-auto d-flex align-items-center justify-content-center shadow">
+                        <i class="fa-solid fa-handshake-angle fs-4"></i>
+                    </div>
+                    <h5 class="fw-bold text-white mb-2 font-playfair">Direct Seller Inquiries</h5>
+                    <p class="text-white-50 small mb-0">Connect instantly with genuine property owners and accredited real estate consultants without middlemen.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box h-100 p-4 rounded-4 bg-glass border border-white-10 text-center transition-hover">
+                    <div class="feature-icon mb-3 bg-success text-white rounded-circle mx-auto d-flex align-items-center justify-content-center shadow">
+                        <i class="fa-solid fa-scale-balanced fs-4"></i>
+                    </div>
+                    <h5 class="fw-bold text-white mb-2 font-playfair">Transparent Valuations</h5>
+                    <p class="text-white-50 small mb-0">Real market data insights and realistic PKR valuations tailored for Pakistani real estate dynamics.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box h-100 p-4 rounded-4 bg-glass border border-white-10 text-center transition-hover">
+                    <div class="feature-icon mb-3 bg-info text-white rounded-circle mx-auto d-flex align-items-center justify-content-center shadow">
+                        <i class="fa-solid fa-headset fs-4"></i>
+                    </div>
+                    <h5 class="fw-bold text-white mb-2 font-playfair">Dedicated Concierge</h5>
+                    <p class="text-white-50 small mb-0">Round-the-clock advisory, legal deed transfer guidance, and personalized on-ground home tours.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Customer Testimonials -->
+<section class="testimonials-section py-5 bg-white">
+    <div class="container py-4">
+        <div class="text-center max-w-700 mx-auto mb-5">
+            <span class="section-badge text-primary fw-bold text-uppercase small">Client Stories</span>
+            <h2 class="section-title font-playfair display-6 fw-bold mt-1">What Our Clients Say</h2>
+            <p class="text-muted">Hear from luxury homeowners and smart investors across the nation.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="testimonial-card p-4 rounded-4 bg-light h-100 border-0 shadow-xs">
+                    <div class="stars mb-3 text-warning">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-quote text-secondary fst-italic mb-4">
+                        "HomeNest allowed us to list and sell our 1 Kanal villa on Canal Road Faisalabad in just under 3 weeks. The verified buyers and seamless dashboard made all the difference."
+                    </p>
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Dr. Maryam Siddiqui" class="rounded-circle avatar-img object-fit-cover">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Dr. Maryam Siddiqui</h6>
+                            <small class="text-muted">Home Seller &bull; Faisalabad</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="testimonial-card p-4 rounded-4 bg-light h-100 border-0 shadow-xs">
+                    <div class="stars mb-3 text-warning">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-quote text-secondary fst-italic mb-4">
+                        "Finding our dream home in DHA Lahore was effortless through HomeNest's search filters and accurate photo galleries. Outstanding professionalism!"
+                    </p>
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Hamza Zubair" class="rounded-circle avatar-img object-fit-cover">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Hamza Zubair</h6>
+                            <small class="text-muted">Property Buyer &bull; Lahore</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="testimonial-card p-4 rounded-4 bg-light h-100 border-0 shadow-xs">
+                    <div class="stars mb-3 text-warning">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-quote text-secondary fst-italic mb-4">
+                        "The high-net-worth buyer audience on this platform is unmatched. We managed multiple property acquisitions in Islamabad Sector F-7 smoothly."
+                    </p>
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80" alt="Chaudhry Waqas" class="rounded-circle avatar-img object-fit-cover">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Chaudhry Waqas</h6>
+                            <small class="text-muted">Real Estate Investor &bull; Islamabad</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section py-5 bg-gradient-navy text-white text-center">
+    <div class="container py-4">
+        <div class="max-w-700 mx-auto">
+            <h2 class="display-5 font-playfair fw-bold text-white mb-3">Thinking of Selling Your Property?</h2>
+            <p class="lead text-white-50 mb-4">
+                Join thousands of verified homeowners who list with HomeNest to reach serious buyers and secure top market prices.
+            </p>
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                <a href="{{ url_for('properties.sell') }}" class="btn btn-accent-custom btn-lg px-4 py-3 rounded-pill fw-bold">
+                    <i class="fa-solid fa-plus-circle me-2"></i> List Your Property For Free
+                </a>
+                <a href="{{ url_for('main.contact') }}" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill">
+                    Speak with an Agent
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

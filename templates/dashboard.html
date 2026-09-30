@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+
+{% block title %}User Dashboard — HomeNest{% endblock %}
+
+{% block content %}
+<div class="dashboard-header bg-dark text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="user-avatar-large bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fs-2 fw-bold shadow">
+                        {{ current_user.name[:1] }}
+                    </div>
+                    <div>
+                        <div class="d-flex align-items-center gap-2">
+                            <h2 class="font-playfair fw-bold text-white mb-0">{{ current_user.name }}</h2>
+                            {% if current_user.is_admin() %}
+                                <span class="badge bg-danger rounded-pill">Admin</span>
+                            {% else %}
+                                <span class="badge bg-primary-subtle text-primary rounded-pill">Member Seller</span>
+                            {% endif %}
+                        </div>
+                        <div class="text-white-50 small mt-1">
+                            <i class="fa-regular fa-envelope me-1"></i> {{ current_user.email }}
+                            {% if current_user.phone %} &bull; <i class="fa-solid fa-phone me-1 ms-2"></i> {{ current_user.phone }}{% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a href="{{ url_for('properties.sell') }}" class="btn btn-accent-custom px-4 py-2 rounded-pill fw-bold">
+                    <i class="fa-solid fa-plus-circle me-1"></i> List New Property
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Stat Counter Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="bg-white p-4 rounded-4 shadow-sm border d-flex align-items-center justify-content-between">
+                <div>
+                    <span class="text-muted small fw-semibold text-uppercase">My Active Listings</span>
+                    <h3 class="fw-bold mb-0 text-dark">{{ my_properties|length }}</h3>
+                </div>
+                <div class="stat-icon-circle bg-primary-subtle text-primary">
+                    <i class="fa-solid fa-house-chimney fs-4"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="bg-white p-4 rounded-4 shadow-sm border d-flex align-items-center justify-content-between">
+                <div>
+                    <span class="text-muted small fw-semibold text-uppercase">Saved Favorites</span>
+                    <h3 class="fw-bold mb-0 text-dark">{{ favorite_properties|length }}</h3>
+                </div>
+                <div class="stat-icon-circle bg-danger-subtle text-danger">
+                    <i class="fa-solid fa-heart fs-4"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="bg-white p-4 rounded-4 shadow-sm border d-flex align-items-center justify-content-between">
+                <div>
+                    <span class="text-muted small fw-semibold text-uppercase">Buyer Inquiries</span>
+                    <h3 class="fw-bold mb-0 text-dark">{{ received_inquiries|length }}</h3>
+                </div>
+                <div class="stat-icon-circle bg-success-subtle text-success">
+                    <i class="fa-solid fa-comments fs-4"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Tabs -->
+    <div class="bg-white rounded-4 shadow-sm border overflow-hidden">
+        <ul class="nav nav-tabs custom-nav-tabs px-4 pt-3 border-bottom" id="dashboardTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-bold py-3" id="properties-tab" data-bs-toggle="tab" data-bs-target="#my-properties" type="button" role="tab">
+                    <i class="fa-solid fa-building me-2"></i> My Properties ({{ my_properties|length }})
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold py-3" id="favorites-tab" data-bs-toggle="tab" data-bs-target="#my-favorites" type="button" role="tab">
+                    <i class="fa-solid fa-heart me-2 text-danger"></i> Saved Favorites ({{ favorite_properties|length }})
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold py-3" id="inquiries-tab" data-bs-toggle="tab" data-bs-target="#my-inquiries" type="button" role="tab">
+                    <i class="fa-solid fa-envelope-open-text me-2 text-primary"></i> Buyer Inquiries ({{ received_inquiries|length }})
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content p-4" id="dashboardTabContent">
+            <!-- Tab 1: My Properties -->
+            <div class="tab-pane fade show active" id="my-properties" role="tabpanel">
+                {% if my_properties %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Location</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Date Added</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for prop in my_properties %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-3">
+                                                <img src="{{ prop.image }}" alt="{{ prop.title }}" class="rounded-3 object-fit-cover" style="width: 60px; height: 45px;">
+                                                <div>
+                                                    <a href="{{ url_for('properties.details', property_id=prop.id) }}" class="fw-bold text-dark text-decoration-none hover-primary">
+                                                        {{ prop.title }}
+                                                    </a>
+                                                    <div class="small text-muted">{{ prop.property_type }} &bull; {{ prop.area }}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><i class="fa-solid fa-location-dot text-danger me-1"></i> {{ prop.location }}</td>
+                                        <td class="fw-bold text-primary">{{ prop.formatted_price }}</td>
+                                        <td>
+                                            <span class="badge {% if prop.status == 'Available' %}bg-success-subtle text-success{% else %}bg-danger-subtle text-danger{% endif %} rounded-pill px-3 py-1">
+                                                {{ prop.status }}
+                                            </span>
+                                        </td>
+                                        <td class="text-muted small">{{ prop.created_at.strftime('%b %d, %Y') }}</td>
+                                        <td class="text-end">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <a href="{{ url_for('properties.details', property_id=prop.id) }}" class="btn btn-sm btn-outline-secondary" title="View Property">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </a>
+                                                <a href="{{ url_for('properties.edit_property', property_id=prop.id) }}" class="btn btn-sm btn-outline-primary" title="Edit Listing">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </a>
+                                                <form action="{{ url_for('properties.delete_property', property_id=prop.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this property listing?');" class="d-inline">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Listing">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fa-solid fa-house-chimney display-4 text-muted mb-3"></i>
+                        <h5>No Properties Listed Yet</h5>
+                        <p class="text-muted">Start selling today by listing your first luxury house or apartment.</p>
+                        <a href="{{ url_for('properties.sell') }}" class="btn btn-primary-custom rounded-pill px-4">
+                            <i class="fa-solid fa-plus-circle me-1"></i> List Your First Property
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Tab 2: Saved Favorites -->
+            <div class="tab-pane fade" id="my-favorites" role="tabpanel">
+                {% if favorite_properties %}
+                    <div class="row g-4">
+                        {% for prop in favorite_properties %}
+                            <div class="col-md-6 col-lg-4">
+                                <div class="property-card h-100 shadow-sm rounded-4 overflow-hidden bg-white border">
+                                    <div class="property-img-box position-relative">
+                                        <img src="{{ prop.image }}" alt="{{ prop.title }}" class="property-thumbnail w-100 object-fit-cover">
+                                        <div class="property-price-chip position-absolute bottom-0 start-0 m-3 bg-dark-glass text-white rounded-3 px-3 py-1 font-playfair fw-bold">
+                                            {{ prop.formatted_price }}
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-3">
+                                        <h6 class="fw-bold mb-1 text-truncate"><a href="{{ url_for('properties.details', property_id=prop.id) }}" class="text-decoration-none text-dark">{{ prop.title }}</a></h6>
+                                        <small class="text-muted d-block mb-3">{{ prop.location }} &bull; {{ prop.area }}</small>
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ url_for('properties.details', property_id=prop.id) }}" class="btn btn-outline-primary btn-sm flex-grow-1 rounded-pill">View Details</a>
+                                            <form action="{{ url_for('properties.toggle_favorite', property_id=prop.id) }}" method="POST">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill" title="Remove Favorite">
+                                                    <i class="fa-solid fa-heart-crack"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fa-solid fa-heart display-4 text-muted mb-3"></i>
+                        <h5>No Saved Favorites</h5>
+                        <p class="text-muted">Explore our property collection and click the heart icon to save homes you love.</p>
+                        <a href="{{ url_for('properties.list_properties') }}" class="btn btn-primary-custom rounded-pill px-4">
+                            Explore Properties
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Tab 3: Buyer Inquiries -->
+            <div class="tab-pane fade" id="my-inquiries" role="tabpanel">
+                {% if received_inquiries %}
+                    <div class="row g-3">
+                        {% for inq in received_inquiries %}
+                            <div class="col-12">
+                                <div class="p-4 rounded-4 bg-light border shadow-xs">
+                                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-2">
+                                        <div>
+                                            <span class="badge bg-primary-subtle text-primary rounded-pill mb-1">Inquiry for Property #{{ inq.property_id }} &bull; {{ inq.property.title }}</span>
+                                            <h6 class="fw-bold mb-0 text-dark">{{ inq.name }} <span class="text-muted fw-normal">({{ inq.email }})</span></h6>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="text-muted small">{{ inq.created_at.strftime('%b %d, %Y %I:%M %p') }}</span>
+                                            <a href="tel:{{ inq.phone }}" class="btn btn-sm btn-success rounded-pill px-3">
+                                                <i class="fa-solid fa-phone me-1"></i> {{ inq.phone }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <p class="mb-0 text-secondary bg-white p-3 rounded-3 border">
+                                        "{{ inq.message }}"
+                                    </p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fa-solid fa-envelope-open display-4 text-muted mb-3"></i>
+                        <h5>No Inquiries Yet</h5>
+                        <p class="text-muted">When prospective buyers send messages regarding your listed houses, they will appear here.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

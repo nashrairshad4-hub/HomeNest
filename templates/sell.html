@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}List Your Property for Sale — HomeNest Premium Real Estate{% endblock %}
+
+{% block content %}
+<div class="page-header-banner bg-dark text-white py-5">
+    <div class="container text-center py-2">
+        <span class="badge bg-accent-gold text-dark px-3 py-1 rounded-pill fw-bold mb-2">Sell With HomeNest</span>
+        <h1 class="font-playfair display-5 fw-bold text-white mb-2">List Your Property For Sale</h1>
+        <p class="text-white-50 lead max-w-700 mx-auto">Publish your house or estate to thousands of verified buyers and high-net-worth investors across Pakistan.</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border">
+                <form action="{{ url_for('properties.sell') }}" method="POST" enctype="multipart/form-data">
+                    <!-- Section 1: Basic Information -->
+                    <div class="form-section-header mb-4 pb-2 border-bottom">
+                        <h4 class="font-playfair fw-bold text-dark mb-1"><i class="fa-solid fa-house-chimney text-primary me-2"></i> 1. Basic Property Details</h4>
+                        <p class="text-muted small">Provide clear and accurate details for potential buyers.</p>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-12">
+                            <label class="form-label fw-semibold text-dark">Property Title <span class="text-danger">*</span></label>
+                            <input type="text" name="title" class="form-control form-control-lg" placeholder="e.g. Ultra Luxury 1 Kanal Spanish Villa on Canal Road" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">Property Type <span class="text-danger">*</span></label>
+                            <select name="property_type" class="form-select form-control-lg" required>
+                                <option value="House">House</option>
+                                <option value="Villa" selected>Luxury Villa</option>
+                                <option value="Apartment">Apartment</option>
+                                <option value="Penthouse">Penthouse</option>
+                                <option value="Commercial">Commercial Property</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">Asking Price (PKR) <span class="text-danger">*</span></label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-light fw-bold text-primary">PKR</span>
+                                <input type="number" name="price" class="form-control" placeholder="e.g. 45000000" min="100000" step="50000" required>
+                            </div>
+                            <small class="text-muted">Enter full amount in numbers (e.g. 45000000 for 4.5 Crore).</small>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">City / Location <span class="text-danger">*</span></label>
+                            <select name="location" class="form-select form-control-lg" required>
+                                <option value="Faisalabad">Faisalabad</option>
+                                <option value="Lahore">Lahore</option>
+                                <option value="Islamabad">Islamabad</option>
+                                <option value="Karachi">Karachi</option>
+                                <option value="Rawalpindi">Rawalpindi</option>
+                                <option value="Multan">Multan</option>
+                                <option value="Peshawar">Peshawar</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">Exact Address / Sector <span class="text-danger">*</span></label>
+                            <input type="text" name="address" class="form-control form-control-lg" placeholder="e.g. Block B, Canal Road" required>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Specifications -->
+                    <div class="form-section-header mb-4 pb-2 border-bottom pt-3">
+                        <h4 class="font-playfair fw-bold text-dark mb-1"><i class="fa-solid fa-ruler-combined text-primary me-2"></i> 2. Specifications & Dimensions</h4>
+                        <p class="text-muted small">Specify the rooms, surface area, and construction year.</p>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3 col-6">
+                            <label class="form-label fw-semibold text-dark">Bedrooms <span class="text-danger">*</span></label>
+                            <input type="number" name="bedrooms" class="form-control form-control-lg" min="1" max="20" value="4" required>
+                        </div>
+
+                        <div class="col-md-3 col-6">
+                            <label class="form-label fw-semibold text-dark">Bathrooms <span class="text-danger">*</span></label>
+                            <input type="number" name="bathrooms" class="form-control form-control-lg" min="1" max="20" value="4" required>
+                        </div>
+
+                        <div class="col-md-3 col-6">
+                            <label class="form-label fw-semibold text-dark">Area Size <span class="text-danger">*</span></label>
+                            <input type="text" name="area" class="form-control form-control-lg" placeholder="e.g. 1 Kanal, 10 Marla" required>
+                        </div>
+
+                        <div class="col-md-3 col-6">
+                            <label class="form-label fw-semibold text-dark">Year Built</label>
+                            <input type="number" name="year_built" class="form-control form-control-lg" min="1980" max="2027" value="2024">
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-semibold text-dark">Detailed Description <span class="text-danger">*</span></label>
+                            <textarea name="description" rows="5" class="form-control" placeholder="Describe the architectural style, flooring, kitchen fittings, neighborhood highlights, and unique selling points." required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Amenities & Features -->
+                    <div class="form-section-header mb-4 pb-2 border-bottom pt-3">
+                        <h4 class="font-playfair fw-bold text-dark mb-1"><i class="fa-solid fa-sparkles text-primary me-2"></i> 3. Features & Amenities</h4>
+                        <p class="text-muted small">Select all available amenities to attract higher inquiry volume.</p>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        {% set available_amenities = ['Swimming Pool', 'Solar Inverter System', 'CCTV 24/7 Security', 'Lawn & Landscaped Garden', 'Modern Chef Kitchen', 'Servant Quarter', 'Covered 2+ Car Garage', 'Central Heating & AC', 'Elevator / Lift', 'Smart Home Automation', 'Basement Home Cinema', 'Sauna / Spa', 'Double Glazed Windows', 'Gated Society Access'] %}
+                        {% for am in available_amenities %}
+                            <div class="col-md-4 col-6">
+                                <div class="form-check p-2 rounded-3 border bg-light-soft">
+                                    <input class="form-check-input ms-0 me-2" type="checkbox" name="amenities" value="{{ am }}" id="amenity_{{ loop.index }}">
+                                    <label class="form-check-label fw-medium text-dark small" for="amenity_{{ loop.index }}">
+                                        {{ am }}
+                                    </label>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Section 4: Imagery & Photos -->
+                    <div class="form-section-header mb-4 pb-2 border-bottom pt-3">
+                        <h4 class="font-playfair fw-bold text-dark mb-1"><i class="fa-solid fa-images text-primary me-2"></i> 4. Property Photos & Gallery</h4>
+                        <p class="text-muted small">High quality images generate up to 5x more buyer responses.</p>
+                    </div>
+
+                    <div class="row g-3 mb-5">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">Main Image URL</label>
+                            <input type="url" name="image_url" class="form-control" placeholder="https://images.unsplash.com/photo-...">
+                            <small class="text-muted">Or enter a public high-resolution photo URL.</small>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold text-dark">Upload Local Photo</label>
+                            <input type="file" name="image_file" class="form-control" accept="image/*">
+                            <small class="text-muted">Accepted formats: JPG, PNG, WEBP (Max 16MB).</small>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-semibold text-dark">Additional Gallery Image URLs (One URL per line)</label>
+                            <textarea name="additional_images" rows="3" class="form-control" placeholder="https://images.unsplash.com/photo-1...&#10;https://images.unsplash.com/photo-2..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-3 pt-3 border-top">
+                        <a href="{{ url_for('auth.dashboard') }}" class="btn btn-outline-secondary px-4 py-2 rounded-pill">Cancel</a>
+                        <button type="submit" class="btn btn-primary-custom px-5 py-2 fw-bold rounded-pill">
+                            <i class="fa-solid fa-check-circle me-2"></i> Publish Property Listing
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

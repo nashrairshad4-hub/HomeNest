@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Account — HomeNest Premium Real Estate{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper py-5 d-flex align-items-center min-vh-75 bg-light-soft">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-6">
+                <div class="card border-0 shadow-lg rounded-4 p-4 p-md-5 bg-white">
+                    <div class="text-center mb-4">
+                        <div class="brand-icon-box mx-auto mb-3" style="width: 50px; height: 50px; border-radius: 12px;">
+                            <i class="fa-solid fa-hotel text-white fs-4"></i>
+                        </div>
+                        <h3 class="font-playfair fw-bold mb-1">Join HomeNest</h3>
+                        <p class="text-muted small">Create an account to buy, list, and bookmark luxury properties.</p>
+                    </div>
+
+                    <form action="{{ url_for('auth.register') }}" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-muted">Full Name <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="fa-regular fa-user text-muted"></i></span>
+                                <input type="text" name="name" class="form-control border-start-0 bg-light" placeholder="e.g. Bilal Irshad" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-muted">Email Address <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="fa-regular fa-envelope text-muted"></i></span>
+                                <input type="email" name="email" class="form-control border-start-0 bg-light" placeholder="name@domain.com" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-muted">Phone Number <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-phone text-muted"></i></span>
+                                <input type="tel" name="phone" class="form-control border-start-0 bg-light" placeholder="+92 300 1234567" required>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold text-muted">Password <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-lock text-muted"></i></span>
+                                    <input type="password" name="password" class="form-control border-start-0 bg-light" placeholder="Min. 6 chars" required minlength="6">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold text-muted">Confirm Password <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-shield text-muted"></i></span>
+                                    <input type="password" name="confirm_password" class="form-control border-start-0 bg-light" placeholder="Repeat password" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="termsAgree" required checked>
+                            <label class="form-check-label small text-muted" for="termsAgree">
+                                I agree to the HomeNest <a href="#" class="text-primary text-decoration-none">Terms of Service</a> & <a href="#" class="text-primary text-decoration-none">Privacy Policy</a>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom w-100 py-2 fw-semibold rounded-pill mb-3">
+                            Create Free Account
+                        </button>
+
+                        <div class="text-center small text-muted">
+                            Already have an account? 
+                            <a href="{{ url_for('auth.login') }}" class="text-primary fw-bold text-decoration-none">Sign In</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,6 @@
+{
+  "name": "HomeNest — Premium Real Estate",
+  "description": "A modern, professional and fully responsive real estate platform to buy, sell, and manage luxury properties with search, filters, user dashboards, and admin management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

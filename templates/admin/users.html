@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}User Registry — Admin HomeNest{% endblock %}
+
+{% block content %}
+<div class="page-header-banner bg-dark text-white py-4">
+    <div class="container">
+        <h2 class="font-playfair fw-bold text-white mb-1">Registered Users & Sellers</h2>
+        <p class="text-white-50 small mb-0">Overview of registered accounts, seller listings, and user permissions.</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="bg-white p-4 rounded-4 shadow-sm border">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>User Name</th>
+                        <th>Email Address</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Properties Listed</th>
+                        <th>Joined On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in users %}
+                        <tr>
+                            <td class="text-muted">#{{ u.id }}</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="avatar-circle-sm bg-primary text-white fw-bold">
+                                        {{ u.name[:1] }}
+                                    </div>
+                                    <strong class="text-dark">{{ u.name }}</strong>
+                                </div>
+                            </td>
+                            <td>{{ u.email }}</td>
+                            <td>{{ u.phone or 'N/A' }}</td>
+                            <td>
+                                <span class="badge {% if u.role == 'admin' %}bg-danger{% else %}bg-primary-subtle text-primary{% endif %} rounded-pill px-3 py-1">
+                                    {{ u.role|capitalize }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark border rounded-pill px-3">
+                                    {{ u.properties|length }} Listings
+                                </span>
+                            </td>
+                            <td class="text-muted small">{{ u.created_at.strftime('%b %d, %Y') }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

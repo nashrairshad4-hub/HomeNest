@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage All Properties — Admin HomeNest{% endblock %}
+
+{% block content %}
+<div class="page-header-banner bg-dark text-white py-4">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="font-playfair fw-bold text-white mb-1">Manage Property Listings</h2>
+                <p class="text-white-50 small mb-0">Review, update, mark as sold, or delete any listing across the platform.</p>
+            </div>
+            <a href="{{ url_for('properties.sell') }}" class="btn btn-accent-custom rounded-pill px-4 fw-bold">
+                <i class="fa-solid fa-plus-circle me-1"></i> Add Property
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="bg-white p-4 rounded-4 shadow-sm border">
+        <!-- Filter Bar -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4 pb-3 border-bottom">
+            <div class="btn-group btn-group-sm">
+                <a href="{{ url_for('admin.properties') }}" class="btn {% if not current_status %}btn-primary{% else %}btn-outline-secondary{% endif %}">All ({{ properties|length }})</a>
+                <a href="{{ url_for('admin.properties', status='Available') }}" class="btn {% if current_status == 'Available' %}btn-success{% else %}btn-outline-secondary{% endif %}">Available</a>
+                <a href="{{ url_for('admin.properties', status='Sold') }}" class="btn {% if current_status == 'Sold' %}btn-danger{% else %}btn-outline-secondary{% endif %}">Sold</a>
+            </div>
+
+            <div class="text-muted small">
+                Showing total {{ properties|length }} database records
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Property</th>
+                        <th>Seller</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Toggle Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for prop in properties %}
+                        <tr>
+                            <td class="text-muted">#{{ prop.id }}</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="{{ prop.image }}" alt="{{ prop.title }}" class="rounded-3 object-fit-cover" style="width: 65px; height: 48px;">
+                                    <div>
+                                        <a href="{{ url_for('properties.details', property_id=prop.id) }}" class="fw-bold text-dark text-decoration-none">
+                                            {{ prop.title }}
+                                        </a>
+                                        <div class="small text-muted">{{ prop.location }} &bull; {{ prop.property_type }} &bull; {{ prop.area }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="small">
+                                    <strong class="text-dark">{{ prop.seller.name if prop.seller else 'Agent' }}</strong>
+                                    <div class="text-muted">{{ prop.seller.email if prop.seller else '' }}</div>
+                                </div>
+                            </td>
+                            <td class="fw-bold text-primary">{{ prop.formatted_price }}</td>
+                            <td>
+                                <span class="badge {% if prop.status == 'Available' %}bg-success-subtle text-success{% else %}bg-danger-subtle text-danger{% endif %} rounded-pill px-3 py-1">
+                                    {{ prop.status }}
+                                </span>
+                            </td>
+                            <td>
+                                <form action="{{ url_for('admin.toggle_status', property_id=prop.id) }}" method="POST" class="d-inline">
+                                    <input type="hidden" name="status" value="{% if prop.status == 'Available' %}Sold{% else %}Available{% endif %}">
+                                    <button type="submit" class="btn btn-sm btn-outline-{% if prop.status == 'Available' %}warning{% else %}success{% endif %} rounded-pill">
+                                        Mark as {% if prop.status == 'Available' %}Sold{% else %}Available{% endif %}
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{{ url_for('properties.details', property_id=prop.id) }}" class="btn btn-outline-secondary" title="View Property"><i class="fa-solid fa-eye"></i></a>
+                                    <a href="{{ url_for('properties.edit_property', property_id=prop.id) }}" class="btn btn-outline-primary" title="Edit Property"><i class="fa-solid fa-pen"></i></a>
+                                    <form action="{{ url_for('properties.delete_property', property_id=prop.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Confirm permanent deletion of property #{{ prop.id }}?');">
+                                        <button type="submit" class="btn btn-outline-danger" title="Delete Property"><i class="fa-solid fa-trash"></i></button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

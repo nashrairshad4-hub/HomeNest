@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact & Support — HomeNest{% endblock %}
+
+{% block content %}
+<div class="page-header-banner bg-dark text-white py-5">
+    <div class="container text-center py-2">
+        <span class="badge bg-primary px-3 py-1 rounded-pill mb-2">Get In Touch</span>
+        <h1 class="font-playfair display-5 fw-bold text-white mb-2">Contact Our Advisory Team</h1>
+        <p class="text-white-50 lead max-w-700 mx-auto">Have questions about listing a property, purchasing advice, or need verified legal consultation?</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-5">
+        <!-- Contact Information -->
+        <div class="col-lg-5">
+            <div class="bg-dark-slate text-white p-4 p-md-5 rounded-4 shadow-sm h-100">
+                <h3 class="font-playfair fw-bold mb-4 text-white">Contact Details</h3>
+                
+                <div class="d-flex align-items-start gap-3 mb-4">
+                    <div class="stat-icon-circle bg-primary text-white flex-shrink-0">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-1 text-white">Headquarters</h6>
+                        <p class="text-white-50 small mb-0">Executive Tower, Canal Road &bull; Faisalabad, Pakistan</p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start gap-3 mb-4">
+                    <div class="stat-icon-circle bg-primary text-white flex-shrink-0">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-1 text-white">Phone Inquiries</h6>
+                        <p class="text-white-50 small mb-0">+92 (300) 123-4567 / +92 (321) 987-6543</p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start gap-3 mb-4">
+                    <div class="stat-icon-circle bg-primary text-white flex-shrink-0">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-1 text-white">Email Advisory</h6>
+                        <p class="text-white-50 small mb-0">concierge@homenest.com</p>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start gap-3">
+                    <div class="stat-icon-circle bg-primary text-white flex-shrink-0">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-1 text-white">Working Hours</h6>
+                        <p class="text-white-50 small mb-0">Monday – Saturday: 9:00 AM – 8:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="col-lg-7">
+            <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border">
+                <h3 class="font-playfair fw-bold mb-2">Send Us A Message</h3>
+                <p class="text-muted small mb-4">Fill in the details below and an accredited HomeNest property consultant will connect with you.</p>
+
+                <form action="{{ url_for('main.contact') }}" method="POST">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-muted">Your Name <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control" placeholder="e.g. Bilal Irshad" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-muted">Email Address <span class="text-danger">*</span></label>
+                            <input type="email" name="email" class="form-control" placeholder="name@example.com" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-semibold text-muted">Phone Number</label>
+                            <input type="tel" name="phone" class="form-control" placeholder="+92 3XX XXXXXXX">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-semibold text-muted">Message <span class="text-danger">*</span></label>
+                            <textarea name="message" rows="5" class="form-control" placeholder="How can our real estate team help you?" required></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary-custom w-100 py-3 fw-semibold rounded-pill">
+                                Send Message <i class="fa-solid fa-paper-plane ms-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
